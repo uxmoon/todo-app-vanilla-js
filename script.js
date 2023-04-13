@@ -54,10 +54,23 @@ const updateTodo = (id, completed) => {
     body: JSON.stringify({
       completed,
     }),
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+    },
   })
     .then((response) => response.json())
     .then((data) => console.log(data))
+}
+
+const deleteTodo = (event) => {
+  if (event.target.tagName === 'LI') {
+    const id = event.target.dataset.id
+    fetch(`${apiUrl}/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then(() => event.target.remove())
+  }
 }
 
 const init = () => {
@@ -66,6 +79,7 @@ const init = () => {
   document.addEventListener('DOMContentLoaded', getTodos)
   form.addEventListener('submit', createTodo)
   list.addEventListener('click', toggleCompletion)
+  list.addEventListener('dblclick', deleteTodo)
 }
 
 init()

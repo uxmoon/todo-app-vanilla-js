@@ -23,7 +23,19 @@ const addToDom = (todo) => {
 
 const createTodo = (event) => {
   event.preventDefault()
-  console.log(event.target.firstElementChild.value)
+  const newTodo = {
+    title: event.target.firstElementChild.value,
+    completed: false,
+  }
+  fetch(apiUrl, {
+    method: 'POST',
+    body: JSON.stringify(newTodo),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => addToDom(data))
 }
 
 const init = () => {

@@ -38,10 +38,31 @@ const createTodo = (event) => {
     .then((data) => addToDom(data))
 }
 
+const toggleCompletion = (event) => {
+  if (event.target.tagName === 'LI') {
+    event.target.classList.toggle('completed')
+    fetch(`${apiUrl}/${event.target.dataset.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        completed: event.target.classList.contains('completed'),
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+    // console.log(
+    //   event.target.dataset.id,
+    //   event.target.classList.contains('completed')
+    // )
+  }
+}
+
 const init = () => {
-  document.addEventListener('DOMContentLoaded', getTodos)
   const form = document.querySelector('#todo-form')
+  const list = document.querySelector('#todo-list')
+  document.addEventListener('DOMContentLoaded', getTodos)
   form.addEventListener('submit', createTodo)
+  list.addEventListener('click', toggleCompletion)
 }
 
 init()

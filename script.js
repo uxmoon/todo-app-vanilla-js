@@ -41,20 +41,23 @@ const createTodo = (event) => {
 const toggleCompletion = (event) => {
   if (event.target.tagName === 'LI') {
     event.target.classList.toggle('completed')
-    fetch(`${apiUrl}/${event.target.dataset.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        completed: event.target.classList.contains('completed'),
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-    // console.log(
-    //   event.target.dataset.id,
-    //   event.target.classList.contains('completed')
-    // )
+    updateTodo(
+      event.target.dataset.id,
+      event.target.classList.contains('completed')
+    )
   }
+}
+
+const updateTodo = (id, completed) => {
+  fetch(`${apiUrl}/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      completed,
+    }),
+    headers: { 'Content-Type': 'application/json' },
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
 }
 
 const init = () => {
